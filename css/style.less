@@ -1,0 +1,98 @@
+@color_lightblue: #E0F0FF;
+@color_lightred: #FFC2C2;
+@color_lightgreen: #66FF33;
+@color_lightyellow: #FFFFB2;
+@color_orange: #FF8533;
+
+.rounded(@size) {
+	-webkit-border-radius: @size;
+	-moz-border-radius: @size;
+	border-radius: @size;
+}
+
+.unselectable {
+	::selection {background: transparent;}
+	::-moz-selection {background: transparent;}
+}
+
+body {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+#container {
+	margin: 20px auto 0;
+	width: 345px;
+}
+
+table#gameTable {
+	thead td, td.index, td.gameCell {
+		font-weight: bold;
+		width: 16px;
+		height: 16px;
+	}
+
+	tbody td {
+		.rounded(5px);
+		&.gameCell {
+			cursor: pointer;
+			text-align: center;
+		}
+		&.state_0 {
+			background-color: white;
+		}
+		&.state_2 {
+			background-color: @color_lightred;
+		}
+		&.state_1, &.state_3 {
+			background-color: @color_lightgreen;
+		}
+	}
+	background-color: @color_lightblue;
+	.rounded(8px);
+	.unselectable;
+}
+
+.message {
+	.rounded(5px);
+	padding: 10px;
+	margin: 10px 0;
+
+	&.state_0 {
+		background-color: @color_lightyellow;
+	}
+
+	&.state_hacker {
+		background-color: @color_orange;
+		font-weight: bold;
+	}
+
+	&.state_2, &.state_false {
+		background-color: @color_lightred;
+	}
+
+	&.state_true, &.state_3 {
+		background-color: @color_lightgreen;
+	}
+}
+
+.shots {
+	margin-top: 10px;
+}
+
+.buttons {
+	text-align: center;
+}
+
+.btn {
+	.rounded(6px);
+	line-height: 200%;
+	padding: 5px 15px;
+	text-transform: uppercase;
+	cursor: pointer;
+	width: 45%;
+
+	&.newGame {
+		background-color: @color_lightblue;
+	}
+}

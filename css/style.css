@@ -1,0 +1,93 @@
+.unselectable ::selection {
+  background: transparent;
+}
+.unselectable ::-moz-selection {
+  background: transparent;
+}
+body {
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  font-size: 14px;
+}
+#container {
+  margin: 20px auto 0;
+  width: 345px;
+}
+table#gameTable {
+  background-color: #e0f0ff;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+table#gameTable thead td,
+table#gameTable td.index,
+table#gameTable td.gameCell {
+  font-weight: bold;
+  width: 16px;
+  height: 16px;
+}
+table#gameTable tbody td {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+table#gameTable tbody td.gameCell {
+  cursor: pointer;
+  text-align: center;
+}
+table#gameTable tbody td.state_0 {
+  background-color: white;
+}
+table#gameTable tbody td.state_2 {
+  background-color: #ffc2c2;
+}
+table#gameTable tbody td.state_1,
+table#gameTable tbody td.state_3 {
+  background-color: #66ff33;
+}
+table#gameTable ::selection {
+  background: transparent;
+}
+table#gameTable ::-moz-selection {
+  background: transparent;
+}
+.message {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+.message.state_0 {
+  background-color: #ffffb2;
+}
+.message.state_hacker {
+  background-color: #ff8533;
+  font-weight: bold;
+}
+.message.state_2,
+.message.state_false {
+  background-color: #ffc2c2;
+}
+.message.state_true,
+.message.state_3 {
+  background-color: #66ff33;
+}
+.shots {
+  margin-top: 10px;
+}
+.buttons {
+  text-align: center;
+}
+.btn {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  line-height: 200%;
+  padding: 5px 15px;
+  text-transform: uppercase;
+  cursor: pointer;
+  width: 45%;
+}
+.btn.newGame {
+  background-color: #e0f0ff;
+}
