@@ -74,7 +74,7 @@ class Map
 	public function generateMap() {
 		for($y = 0; $y < static::MAP_Y; $y++) {
 			for($x = 0; $x < static::MAP_X; $x++) {
-				$this->map[$x][$y] = 0;
+				$this->map[$y][$x] = 0;
 			}
 		}
 
@@ -118,24 +118,24 @@ class Map
 	 * @return boolean            True if a ship can be placed at the position
 	 */
 	public function canPositionShipAt($shipSize, Array $position, $direction) {
-		list($x, $y) = $position;
+		list($y, $x) = $position;
 
 		for($i = 0; $i < $shipSize; $i++) {
 			switch($direction) {
 				case self::LEFT:
-					if($this->isOccupiedCoordinate($x - $i, $y)) return false;
+					if($this->isOccupiedCoordinate($y, $x - $i)) return false;
 					break;
 
 				case self::RIGHT:
-					if($this->isOccupiedCoordinate($x + $i, $y)) return false;
+					if($this->isOccupiedCoordinate($y, $x + $i)) return false;
 					break;
 
 				case self::UP:
-					if($this->isOccupiedCoordinate($x, $y - $i)) return false;
+					if($this->isOccupiedCoordinate($y - $i, $x)) return false;
 					break;
 
 				case self::DOWN:
-					if($this->isOccupiedCoordinate($x, $y + $i)) return false;
+					if($this->isOccupiedCoordinate($y + $i, $x)) return false;
 			}
 		}
 
@@ -152,24 +152,24 @@ class Map
 	 *                            positions were available
 	 */
 	public function positionShipAt($shipSize, Array $position, $direction) {
-		list($x, $y) = $position;
+		list($y, $x) = $position;
 
 		for($i = 0; $i < $shipSize; $i++) {
 			switch($direction) {
 				case self::LEFT:
-					$this->fillCoordinate($x - $i, $y);
+					$this->fillCoordinate($y, $x - $i);
 					break;
 
 				case self::RIGHT:
-					$this->fillCoordinate($x + $i, $y);
+					$this->fillCoordinate($y, $x + $i);
 					break;
 
 				case self::UP:
-					$this->fillCoordinate($x, $y - $i);
+					$this->fillCoordinate($y - $i, $x);
 					break;
 
 				case self::DOWN:
-					$this->fillCoordinate($x, $y + $i);
+					$this->fillCoordinate($y + $i, $x);
 			}
 		}
 
@@ -178,25 +178,25 @@ class Map
 
 	/**
 	 * Checks if a certain coordinate is available
-	 * @param  integer  $x The X Coordinate
 	 * @param  integer  $y The Y coordinate
+	 * @param  integer  $x The X Coordinate
 	 * @return boolean     If the position equals 0, return true
 	 */
-	public function isOccupiedCoordinate($x, $y) {
+	public function isOccupiedCoordinate($y, $x) {
 		if($x < 0 || $x > self::MAP_X - 1 || $y < 0 || $y > self::MAP_Y - 1)
 			return true;
 
-		return 0 !== $this->map[$x][$y];
+		return 0 !== $this->map[$y][$x];
 	}
 
 	/**
 	 * Change the value of certain coordinate to 1
-	 * @param  integer  $x The X Coordinate
 	 * @param  integer  $y The Y coordinate
+	 * @param  integer  $x The X Coordinate
 	 * @return integer     Always return 1
 	 */
-	public function fillCoordinate($x, $y) {
-		return $this->map[$x][$y] = 1;
+	public function fillCoordinate($y, $x) {
+		return $this->map[$y][$x] = 1;
 	}
 
 	/**
@@ -230,23 +230,24 @@ class Map
 			$randX = rand(0, static::MAP_X - 1);
 			$randY = rand(0, static::MAP_Y - 1);
 			if(0 === $this->map[$randX][$randY]) {
-				return array($randX, $randY);
+				return array($randY, $randX);
 			}
 		}
 	}
 
 	/**
 	 * Shoot at a X/Y coordinate by increasing its value with 2
-	 * @param  integer  $x The X Coordinate
 	 * @param  integer  $y The Y coordinate
+	 * @param  integer  $x The X Coordinate
 	 * @return mixed 	   Returns on of the following values, based on result
 	 *                       2 - shot went thru, missed a target
 	 *                       3 - shot went thru, hit a target
 	 *                       false - location has been shot at already
 	 *                       true - game over, all targets are down
 	 */
-	public function shoot($x, $y) {
-		$state = (int) $this->map[$x][$y];
+	public function shoot($y, $x) {
+		$state = (int) $this->map[$y][$x];
+
 		switch($state) {
 			case 0:
 				$this->shots++;
@@ -260,7 +261,7 @@ class Map
 				return false;
 		}
 
-		$newState = $this->map[$x][$y] += 2;
+		$newState = $this->map[$y][$x] += 2;
 
 		if(0 === $this->totalTargets)
 			return true;
