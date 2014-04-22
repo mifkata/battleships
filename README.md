@@ -18,7 +18,7 @@ affect the game experience
 # Starting the console application
 
 ```
-php console.php
+php index.php
 ```
 
 # Starting the web appliction
