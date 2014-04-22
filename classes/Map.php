@@ -12,6 +12,7 @@ class Map
 	protected $map = array();
 	protected $totalTargets = 0;
 	protected $shots = 0;
+	protected $shipPositions = array();
 	
 	static $ships = array(5, 4, 4);
 	static $orientation = array('horizontal', 'vertical');
@@ -153,24 +154,28 @@ class Map
 	 */
 	public function positionShipAt($shipSize, Array $position, $direction) {
 		list($y, $x) = $position;
+		$shipId = sizeof($this->shipPositions);
 
 		for($i = 0; $i < $shipSize; $i++) {
 			switch($direction) {
 				case self::LEFT:
-					$this->fillCoordinate($y, $x - $i);
+					$newY = $y; $newX = $x - $i;
 					break;
 
 				case self::RIGHT:
-					$this->fillCoordinate($y, $x + $i);
+					$newY = $y; $newX = $x + $i;
 					break;
 
 				case self::UP:
-					$this->fillCoordinate($y - $i, $x);
+					$newY = $y - $i; $newX = $x;
 					break;
 
 				case self::DOWN:
-					$this->fillCoordinate($y + $i, $x);
+					$newY = $y + $i; $newX = $x;
 			}
+
+			$this->fillCoordinate($newY, $newX);
+			$this->shipPositions[$shipId][] = array($newY, $newX);
 		}
 
 		return true;
@@ -242,11 +247,13 @@ class Map
 	 * @return mixed 	   Returns on of the following values, based on result
 	 *                       2 - shot went thru, missed a target
 	 *                       3 - shot went thru, hit a target
+	 *                       4 - shot went thru, sank a ship
 	 *                       false - location has been shot at already
 	 *                       true - game over, all targets are down
 	 */
 	public function shoot($y, $x) {
 		$state = (int) $this->map[$y][$x];
+		$shipSunk = false;
 
 		switch($state) {
 			case 0:
@@ -255,6 +262,7 @@ class Map
 			case 1:
 				$this->shots++;
 				$this->totalTargets--;
+				$shipSunk = $this->sunkShip($y, $x);
 				break;
 			case 2:
 			case 3:
@@ -262,11 +270,37 @@ class Map
 		}
 
 		$newState = $this->map[$y][$x] += 2;
+		$newState = true === $shipSunk ? 4 : $newState;
 
 		if(0 === $this->totalTargets)
 			return true;
 
 		return $newState;
+	}
+
+	/**
+	 * Checks if a ship has sank
+	 * @param  integer  $y The Y coordinate
+	 * @param  integer  $x The X Coordinate
+	 * @return boolean     True if the ship has sank, false otherwise
+	 */
+	public function sunkShip($y, $x) {
+		//var_export($this->shipPositions); die;
+		foreach($this->shipPositions as $shipId => $shipPosition) {
+			// skip ships that have already sunk
+			if(0 === sizeof($shipPosition))
+				continue;
+
+			foreach($shipPosition as $positionId => $position) {
+				list($shipY, $shipX) = $position;
+				if($shipY == $y && $shipX == $x) {
+					unset($this->shipPositions[$shipId][$positionId]);
+					return 0 === sizeof($this->shipPositions[$shipId]);
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**

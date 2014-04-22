@@ -14,6 +14,7 @@ class Messanger
 	const MSG_SHOOT_MISS = 'Arrgh! You missed!';
 	const MSG_SHOOT_WRONG = 'Oops! You already shot there!';
 	const MSG_SHOOT_BULLSEYE = 'Bullseye! You hit a target!';
+	const MSG_SHIP_SANK = 'Blimey! You sank a ship!';
 	const MSG_CONGRATULATIONS = 'Congratulations! You sank all ships and won the game!';
 	const MSG_TOTAL_SHOTS = 'Total shots: ';
 	const MSG_HACKER_MODE = 'Hacker mode activated!';
@@ -58,6 +59,10 @@ class Messanger
 
 		if(3 === (int) $shot) {
 			return self::MSG_SHOOT_BULLSEYE;
+		}
+
+		if(4 === (int) $shot) {
+			return self::MSG_SHIP_SANK;
 		}
 	}
 }

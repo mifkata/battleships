@@ -69,7 +69,8 @@ table#gameTable ::-moz-selection {
   background-color: #ffc2c2;
 }
 .message.state_true,
-.message.state_3 {
+.message.state_3,
+.message.state_4 {
   background-color: #66ff33;
 }
 .shots {
